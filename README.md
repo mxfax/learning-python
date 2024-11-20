@@ -14,3 +14,7 @@ Projects to learn python
 The idea was to create a bot on telegram that can join a group chat of friends, accept various movies from users,
 show the list of accepted movies, remove movies from the list, vote and show vote results.
 You need to create a bot with @botfather on telegram to obtain bot API
+
+3. Higher vs Lower game:
+
+As part of my studies, I created a simple yet frustratingly addictive game called “Higher or Lower.” The goal is to guess who has more Instagram followers. The game can be easily extended by adding new entries to the data list. The follower counts are based on Instagram data from 2023.
