@@ -18,3 +18,7 @@ You need to create a bot with @botfather on telegram to obtain bot API
 3. Higher vs Lower game:
 
 As part of my studies, I created a simple yet frustratingly addictive game called “Higher or Lower.” The goal is to guess who has more Instagram followers. The game can be easily extended by adding new entries to the data list. The follower counts are based on Instagram data from 2023.
+
+4. Coffee Machine Simulator
+   
+The goal of this project was to create a coffee machine simulator that allows users to select a drink, insert coins, receive change, and enjoy their beverage. The simulator also includes a hidden command, report, which provides a detailed summary of the remaining resources (water, milk, coffee, and money collected). This program ensures efficient resource management by checking if enough ingredients are available for the selected drink before proceeding. If resources are insufficient or the inserted money is inadequate, the user is informed and prompted to try again.
