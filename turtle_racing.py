@@ -37,7 +37,7 @@ for turtle_index in range(6):
     position_y +=40 
     all_turtles.append(new_turtle)
 
-user_bet = screen.textinput(title="Make your bet", prompt="Who will win the race: blue/gren/purple/red ")
+user_bet = screen.textinput(title="Make your bet", prompt="Who will win the race: blue/green/purple/red ")
 
 if user_bet:
     race_on = True
