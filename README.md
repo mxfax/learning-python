@@ -22,3 +22,7 @@ As part of my studies, I created a simple yet frustratingly addictive game calle
 4. Coffee Machine Simulator
    
 The goal of this project was to create a coffee machine simulator that allows users to select a drink, insert coins, receive change, and enjoy their beverage. The simulator also includes a hidden command, report, which provides a detailed summary of the remaining resources (water, milk, coffee, and money collected). This program ensures efficient resource management by checking if enough ingredients are available for the selected drink before proceeding. If resources are insufficient or the inserted money is inadequate, the user is informed and prompted to try again.
+
+5. Turtle Racing Simulator with bets
+
+It is an interactive racing game created using Python’s turtle module with OOP. Players place a bet on which colored turtle (red, orange, yellow, green, blue, or purple) will win the race. The turtles start at the same position and race across the screen toward a finish line, drawn on the track for added realism. Each turtle’s progress is randomized, making the game unpredictable and exciting. The first turtle to cross the finish line is declared the winner, and players are notified whether their bet was correct. 
