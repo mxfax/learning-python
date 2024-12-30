@@ -26,3 +26,15 @@ The goal of this project was to create a coffee machine simulator that allows us
 5. Turtle Racing Simulator with bets
 
 It is an interactive racing game created using Python’s turtle module with OOP. Players place a bet on which colored turtle (red, orange, yellow, green, blue, or purple) will win the race. The turtles start at the same position and race across the screen toward a finish line, drawn on the track for added realism. Each turtle’s progress is randomized, making the game unpredictable and exciting. The first turtle to cross the finish line is declared the winner, and players are notified whether their bet was correct. 
+
+6. Snake Game
+
+This is a classic Snake Game built with Python’s turtle module. The game features two modes:
+	•	Simple Mode (1): Standard gameplay with a steady speed.
+	•	Advanced Mode (2): Gameplay speeds up as the snake grows!
+   •	Smooth animations with collision detection for walls, food, and the snake’s own body.
+	•	Dynamic scoreboard to track your progress.
+	•	Fully interactive controls (Arrow keys to move the snake).
+	•	Customizable speed variations for a challenging experience.
+ 
+ 
