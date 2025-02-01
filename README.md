@@ -37,4 +37,6 @@ This is a classic Snake Game built with Python’s turtle module. The game featu
 	•	Fully interactive controls (Arrow keys to move the snake).
 	•	Customizable speed variations for a challenging experience.
  
- 
+ 7. Pomodoro Timer
+
+A simple Pomodoro Timer built with Python and Tkinter to enhance productivity using the Pomodoro Technique. It alternates between work and break sessions while tracking progress with checkmarks. This tool helps maintain focus and improve time management.
