@@ -45,19 +45,19 @@ A simple Pomodoro Timer built with Python and Tkinter to enhance productivity us
 
 This Python script uses Selenium to automate job searches on LinkedIn. It prompts users for their desired job title, location, and LinkedIn credentials, then logs into LinkedIn and navigates to the Jobs section to perform a search based on the given criteria. A great starting point for building automated job application tools or learning Selenium web scraping techniques.
 
-## Features
+Features
 
 - Secure credential input using `getpass`
 - Multi-language support (defaults to `en-GB`)
 - Automates login and job search steps
 - Fully browser-based using Firefox and Selenium
 
-## Notes
+Notes
 	•	This script currently uses hardcoded sleep delays (time.sleep()); for more reliable behavior, you might want to improve it using explicit waits (e.g., WebDriverWait).
 	•	LinkedIn may change its HTML structure, which could break the script. Always check for updates.
 	•	Use this tool responsibly and respect LinkedIn’s terms of service.
 
-## License
+License
 
 This project is open-source and available under the MIT License.
 
@@ -65,18 +65,23 @@ This project is open-source and available under the MIT License.
 
 Disclaimer: This project is for educational purposes only. Automated interactions with LinkedIn may violate their terms of service.
 
-## Requirements
+Requirements
 
 - Python 3.6+
 - Firefox browser
 - [GeckoDriver](https://github.com/mozilla/geckodriver/releases) installed and added to your system PATH
 - Selenium Python package
+You can install Selenium via pip:
+
+```bash
+pip install selenium
+```
 
 9. OLX.pt Web Scraper with BeautifulSoup
 
 This Python script scrapes classified listings from [OLX.pt](https://www.olx.pt) based on a user-provided search query. It collects and displays product titles, prices, and links across all available pages for that query.
 
-## Features
+Features
 
 - User-defined search term
 - Automatically detects and loops through all result pages
@@ -85,7 +90,7 @@ This Python script scrapes classified listings from [OLX.pt](https://www.olx.pt)
   - Price
   - Direct link to the listing
 
-## Requirements
+Requirements
 
 - Python 3.6+
 - `requests` and `beautifulsoup4` libraries
@@ -94,9 +99,4 @@ Install dependencies via pip:
 
 ```bash
 pip install requests beautifulsoup4 lxml
-
-You can install Selenium via pip:
-
-```bash
-pip install selenium
-
+```
