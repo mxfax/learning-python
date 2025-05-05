@@ -72,6 +72,29 @@ Disclaimer: This project is for educational purposes only. Automated interaction
 - [GeckoDriver](https://github.com/mozilla/geckodriver/releases) installed and added to your system PATH
 - Selenium Python package
 
+9. OLX.pt Web Scraper with BeautifulSoup
+
+This Python script scrapes classified listings from [OLX.pt](https://www.olx.pt) based on a user-provided search query. It collects and displays product titles, prices, and links across all available pages for that query.
+
+## Features
+
+- User-defined search term
+- Automatically detects and loops through all result pages
+- Extracts and prints:
+  - Item name
+  - Price
+  - Direct link to the listing
+
+## Requirements
+
+- Python 3.6+
+- `requests` and `beautifulsoup4` libraries
+
+Install dependencies via pip:
+
+```bash
+pip install requests beautifulsoup4 lxml
+
 You can install Selenium via pip:
 
 ```bash
