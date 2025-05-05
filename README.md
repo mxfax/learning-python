@@ -40,3 +40,40 @@ This is a classic Snake Game built with Python’s turtle module. The game featu
  7. Pomodoro Timer
 
 A simple Pomodoro Timer built with Python and Tkinter to enhance productivity using the Pomodoro Technique. It alternates between work and break sessions while tracking progress with checkmarks. This tool helps maintain focus and improve time management.
+
+8. LinkedIn Job Search Automation with Selenium
+
+This Python script uses Selenium to automate job searches on LinkedIn. It prompts users for their desired job title, location, and LinkedIn credentials, then logs into LinkedIn and navigates to the Jobs section to perform a search based on the given criteria. A great starting point for building automated job application tools or learning Selenium web scraping techniques.
+
+## Features
+
+- Secure credential input using `getpass`
+- Multi-language support (defaults to `en-GB`)
+- Automates login and job search steps
+- Fully browser-based using Firefox and Selenium
+
+## Notes
+	•	This script currently uses hardcoded sleep delays (time.sleep()); for more reliable behavior, you might want to improve it using explicit waits (e.g., WebDriverWait).
+	•	LinkedIn may change its HTML structure, which could break the script. Always check for updates.
+	•	Use this tool responsibly and respect LinkedIn’s terms of service.
+
+## License
+
+This project is open-source and available under the MIT License.
+
+⸻
+
+Disclaimer: This project is for educational purposes only. Automated interactions with LinkedIn may violate their terms of service.
+
+## Requirements
+
+- Python 3.6+
+- Firefox browser
+- [GeckoDriver](https://github.com/mozilla/geckodriver/releases) installed and added to your system PATH
+- Selenium Python package
+
+You can install Selenium via pip:
+
+```bash
+pip install selenium
+
