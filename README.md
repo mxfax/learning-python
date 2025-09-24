@@ -100,3 +100,9 @@ Install dependencies via pip:
 ```bash
 pip install requests beautifulsoup4 lxml
 ```
+
+10. Tic-Tac-Toe (Python CLI Game)
+A simple command-line implementation of Tic-Tac-Toe where two players can compete using X and O. Features include:
+	•	Side-by-side playground and hint board for easy moves.
+	•	Automatic win and draw detection.
+	•	Option to restart or end after each game.
