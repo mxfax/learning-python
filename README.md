@@ -106,3 +106,36 @@ A simple command-line implementation of Tic-Tac-Toe where two players can compet
 	•	Side-by-side playground and hint board for easy moves.
 	•	Automatic win and draw detection.
 	•	Option to restart or end after each game.
+
+11. Image Watermarking Tool (Tkinter + PIL)
+
+A simple desktop GUI application built with **Python**, **Tkinter**, and **Pillow (PIL)** that lets you watermark your images with **logos** or **text**.  
+
+---
+
+## ✨ Features
+
+- 📂 Upload a **main image**  
+- 📂 Upload a **logo** (supports transparency and resizing)  
+- ➕ Add your logo watermark in:
+  - Top-left  
+  - Top-right  
+  - Bottom-left  
+  - Bottom-right  
+  - Center  
+- 📝 Add a **text watermark** with adjustable transparency  
+- 🔍 Live thumbnail previews of uploaded images  
+- 💾 Save your watermarked image in multiple formats:
+  - PNG
+  - JPEG / JPG
+  - GIF
+  - BMP
+
+---
+
+## 🛠️ Requirements
+
+- **Python 3.8+**
+- The following Python packages:
+  ```bash
+  pip install pillow tk
