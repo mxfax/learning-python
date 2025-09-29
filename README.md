@@ -111,9 +111,7 @@ A simple command-line implementation of Tic-Tac-Toe where two players can compet
 
 A simple desktop GUI application built with **Python**, **Tkinter**, and **Pillow (PIL)** that lets you watermark your images with **logos** or **text**.  
 
----
-
-## ✨ Features
+Features
 
 - 📂 Upload a **main image**  
 - 📂 Upload a **logo** (supports transparency and resizing)  
@@ -131,9 +129,7 @@ A simple desktop GUI application built with **Python**, **Tkinter**, and **Pillo
   - GIF
   - BMP
 
----
-
-## 🛠️ Requirements
+Requirements
 
 - **Python 3.8+**
 - The following Python packages:
