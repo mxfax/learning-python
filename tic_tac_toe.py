@@ -52,14 +52,6 @@ playground_hint = [
     ["4", "5", "6"],
     ["7", "8", "9"]
 ]
-
-#printing a game board with borders side by side with hint board
-def print_board(board):
-    for i, row in enumerate(board):
-        print(" | ".join(row))
-        if i < len(board) - 1: 
-            print("-" * (len(" | ".join(row))))
-
 #updating the current gameboard with hint board on the right side
 def update_board(playground):
     for i, (row_playground, row_hint) in enumerate(zip(playground, playground_hint)):
