@@ -135,3 +135,4 @@ Requirements
 - The following Python packages:
   ```bash
   pip install pillow tk
+	```
