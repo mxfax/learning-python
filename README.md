@@ -113,17 +113,17 @@ A simple desktop GUI application built with **Python**, **Tkinter**, and **Pillo
 
 Features
 
-- 📂 Upload a **main image**  
-- 📂 Upload a **logo** (supports transparency and resizing)  
-- ➕ Add your logo watermark in:
+- Upload a **main image**  
+- Upload a **logo** (supports transparency and resizing)  
+- Add your logo watermark in:
   - Top-left  
   - Top-right  
   - Bottom-left  
   - Bottom-right  
   - Center  
-- 📝 Add a **text watermark** with adjustable transparency  
-- 🔍 Live thumbnail previews of uploaded images  
-- 💾 Save your watermarked image in multiple formats:
+- Add a **text watermark** with adjustable transparency  
+- Live thumbnail previews of uploaded images  
+- Save your watermarked image in multiple formats:
   - PNG
   - JPEG / JPG
   - GIF
@@ -136,3 +136,6 @@ Requirements
   ```bash
   pip install pillow tk
 	```
+12. A simple Python typing speed checker built with Tkinter.
+It displays a sample text from a file, tracks your typing in real time, and gives instant feedback for every character you type — highlighting mistakes and corrections.
+When you finish typing the full text correctly, it calculates and shows your typing speed (words per second).
