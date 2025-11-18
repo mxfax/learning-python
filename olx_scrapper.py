@@ -15,13 +15,10 @@ response = requests.get(f"https://www.olx.pt/ads/q-{search_query}/?page={page}")
 website = response.text
 
 soup = BeautifulSoup(website,"lxml")
-
 pages_label = soup.find(name="div", class_="css-4mw0p4")
-total_pages = pages_label.findAll("a")
+total_pages = pages_label.find_all("a")
 pages = int(total_pages[-2].getText())
-
-
-total_count = soup.find(name="span", class_="css-1r6clzs")
+total_count = soup.find(name="a", class_="css-b6tdh7")
 print("------------------------------")
 print("\n"+total_count.text+"\n")
 print("------------------------------")
