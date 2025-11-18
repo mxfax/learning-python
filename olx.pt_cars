@@ -1,0 +1,296 @@
+import time
+import random
+import csv
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+from colorama import Fore, Style, init
+init(autoreset=True)
+
+WEBSITE = "https://www.olx.pt"
+
+# Common gearbox terms for automatic classification
+AUTO_KEYWORDS = ['automático', 'auto.', 'at', 'automatic']
+MANUAL_KEYWORDS = ['manual', 'man.', 'mt']
+
+def fetch_page(session, query, page):
+    """Fetches a specific page using a shared session."""
+    url = f"https://www.olx.pt/ads/q-{query}/?page={page}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
+    }
+    try:
+        response = session.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        return BeautifulSoup(response.text, "lxml")
+    except requests.exceptions.RequestException as e:
+        print(Fore.RED + f"Error fetching page {page}: {e}")
+        return None
+
+def get_total_pages(soup):
+    """Extracts the total number of pages from the pagination bar or ad count."""
+    if soup is None:
+        return 1
+        
+    pages_label = soup.find(name="div", class_="css-4mw0p4")
+    if pages_label:
+        links = pages_label.find_all("a")
+        if links and len(links) >= 2:
+            try:
+                return int(links[-2].getText().strip())
+            except ValueError:
+                pass
+
+    count_span = soup.find('span', {'data-testid': 'total-count'})
+    if count_span:
+        try:
+            total_ads = int(count_span.get_text().strip().split()[0])
+            return max(1, (total_ads + 19) // 20)
+        except:
+            pass
+            
+    return 1
+
+def parse_numeric(text):
+    """Helper to clean price, year, or mileage strings into a float."""
+    if not text:
+        return None
+    
+    cleaned = text.replace("€", "").strip()
+    cleaned = cleaned.replace(".", "") # Remove thousands separator
+    cleaned = cleaned.replace(",", ".") # Convert decimal comma to dot
+    
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+def scrape_articles(soup):
+    """
+    Scrapes articles and extracts title, price, link, year, mileage, and Caixa.
+    Returns a list of dictionaries.
+    """
+    if soup is None:
+        return []
+        
+    articles = soup.find_all(name="div", class_="css-1apmciz")
+    results = []
+    
+    for tag in articles:
+        title_tag = tag.find("h4")
+        price_tag = tag.find("p")
+        link_tag = tag.find("a")
+        detail_span = tag.find('span', class_='css-h59g4b')
+
+        if not title_tag or not link_tag:
+            continue
+
+        title = title_tag.getText().strip()
+        title_lower = title.lower()
+        link = link_tag.get("href")
+        if link.startswith("/"):
+            link = WEBSITE + link
+
+        # 1. Parse Price
+        raw_price = price_tag.get_text() if price_tag else ""
+        price = parse_numeric(raw_price)
+        
+        # 2. Parse Year, Mileage, and Gearbox
+        year, mileage = None, None
+        caixa = "N/A"
+        
+        if detail_span:
+            details = detail_span.get_text().split(' - ')
+            
+            # Year parsing
+            if len(details) >= 1:
+                year = parse_numeric(details[0].strip())
+            
+            # Mileage parsing
+            if len(details) >= 2:
+                mileage = parse_numeric(details[1].replace('km', '').strip())
+                
+        # Gearbox (Caixa) parsing based on keywords in the title (data enrichment only)
+        if any(keyword in title_lower for keyword in AUTO_KEYWORDS):
+            caixa = "Automático"
+        elif any(keyword in title_lower for keyword in MANUAL_KEYWORDS):
+            caixa = "Manual"
+        
+        results.append({
+            "title": title,
+            "price": price,
+            "link": link,
+            "year": year,
+            "mileage": mileage,
+            "caixa": caixa # Added to data enrichment
+        })
+
+    return results
+
+def print_results(results):
+    """Prints results, calculating average price based on numeric results."""
+    numeric_prices = [item['price'] for item in results if item['price'] is not None]
+    avg_price = sum(numeric_prices) / len(numeric_prices) if numeric_prices else 0
+    
+    print(Fore.CYAN + f"\n--- Displaying {len(results)} Final Results (Avg Price: {avg_price:.2f}€) ---\n" + Style.RESET_ALL)
+
+    if not results:
+        print(Fore.YELLOW + "No results to display after filtering." + Style.RESET_ALL)
+        return
+
+    for i, item in enumerate(results, 1):
+        price = item['price']
+        
+        # Display formatting
+        price_display = f"{price:.2f}€" if price is not None else "N/A"
+        year_display = int(item['year']) if item['year'] is not None else "N/A"
+        mileage_display = f"{item['mileage']:.0f} km" if item['mileage'] is not None else "N/A"
+        caixa_display = item['caixa'] if item['caixa'] else "N/A"
+        
+        numeric_price = float(price) if price is not None else avg_price
+        color = Fore.RED if numeric_price > avg_price else Fore.GREEN
+            
+        print(color + f"{i}. {item['title']} - {price_display}" + Style.RESET_ALL)
+        # Includes Caixa in the details display
+        print(Fore.WHITE + f"   Details: Year: {year_display} | Mileage: {mileage_display} | Caixa: {caixa_display}")
+        print(Fore.YELLOW + f"   {item['link']}" + Style.RESET_ALL)
+
+def sort_results(results):
+    """Sorts results by the price (float), moving None prices to the end."""
+    return sorted(results, key=lambda x: x['price'] if x['price'] is not None else float('inf'))
+
+def export_results_xlsx(results, filename="olx_search_results.xlsx"):
+    """Saves results to an XLSX file using pandas, with professional formatting."""
+    if not results:
+        print(Fore.YELLOW + "No data to export." + Style.RESET_ALL)
+        return
+
+    # Create DataFrame from the list of dictionaries
+    df = pd.DataFrame(results)
+    
+    # --- Formatting for Excel ---
+    
+    # Rename columns for clarity in Portuguese/English mix
+    df.rename(columns={
+        'title': 'Título do Anúncio',
+        'price': 'Preço (€)',
+        'link': 'Link do Anúncio',
+        'year': 'Ano',
+        'mileage': 'Quilómetros (km)',
+        'caixa': 'Caixa (Gearbox)'
+    }, inplace=True)
+
+    # Clean and format data types
+    df['Preço (€)'] = df['Preço (€)'].round(2)
+    df['Ano'] = df['Ano'].apply(lambda x: int(x) if pd.notna(x) and x > 0 else None)
+    df['Quilómetros (km)'] = df['Quilómetros (km)'].apply(lambda x: int(x) if pd.notna(x) and x > 0 else None)
+    
+    # Save to Excel
+    try:
+        df.to_excel(filename, index=False, engine='openpyxl')
+        print(Fore.CYAN + f"\nSuccessfully exported {len(results)} results to {filename}" + Style.RESET_ALL)
+    except Exception as e:
+        print(Fore.RED + f"\nError during Excel export. Please ensure 'pandas' and 'openpyxl' are installed: {e}" + Style.RESET_ALL)
+
+def run_search():
+    search_query = input(Fore.GREEN + "Search for: ").replace(" ", "-")
+    page_limit = 10
+    current_page = 1
+    
+    with requests.Session() as session:
+        soup = fetch_page(session, search_query, current_page)
+        if soup is None:
+            print(Fore.RED + "Could not fetch the first page. Aborting search." + Style.RESET_ALL)
+            return
+
+        total_pages = get_total_pages(soup)
+        print(Fore.MAGENTA + f"\nTotal pages found: {total_pages}\n")
+        
+        all_results = []
+        all_results.extend(scrape_articles(soup))
+
+        while current_page < total_pages:
+            delay = random.uniform(1, 3)
+            print(Fore.LIGHTBLACK_EX + f"Pausing for {delay:.2f}s...")
+            time.sleep(delay)
+            
+            start_page = current_page + 1
+            end_page = min(current_page + page_limit, total_pages)
+            
+            print(Fore.BLUE + f"\nFetching pages {start_page} to {end_page}...\n")
+
+            for page in range(start_page, end_page + 1):
+                soup = fetch_page(session, search_query, page)
+                if soup is not None:
+                    all_results.extend(scrape_articles(soup))
+                current_page = page
+            
+            print(Fore.GREEN + f"\nLoaded {len(all_results)} results so far (up to page {current_page}).\n")
+            
+            if current_page >= total_pages:
+                break
+                
+            choice = input("Load 10 more pages? (yes/no): ").strip().lower()
+            if choice != "yes":
+                break
+
+    # --- Filtering and Sorting ---
+    
+    # 1. Sort by price
+    sort_choice = input("\nSort results by price? (yes/no): ").strip().lower()
+    if sort_choice == "yes":
+        all_results = sort_results(all_results)
+        print(Fore.GREEN + "Results sorted by price." + Style.RESET_ALL)
+
+    # 2. Filter by minimum price
+    min_price_input = input("\nMinimum price to include (press Enter to skip): ").strip()
+    if min_price_input:
+        min_price_value = parse_numeric(min_price_input)
+        if min_price_value is not None:
+            all_results = [
+                item for item in all_results
+                if item['price'] is not None and item['price'] >= min_price_value
+            ]
+            print(Fore.GREEN + f"Filtered results above {min_price_value:.2f}€." + Style.RESET_ALL)
+        else:
+            print(Fore.RED + "Invalid price format. Skipping minimum price filter.")
+
+    # 3. Filter by maximum price
+    max_price_input = input("\nMaximum price to include (press Enter to skip): ").strip()
+    if max_price_input:
+        max_price_value = parse_numeric(max_price_input)
+        if max_price_value is not None:
+            all_results = [
+                item for item in all_results
+                if item['price'] is not None and item['price'] <= max_price_value
+            ]
+            print(Fore.GREEN + f"Filtered results below {max_price_value:.2f}€." + Style.RESET_ALL)
+        else:
+            print(Fore.RED + "Invalid price format. Skipping maximum price filter.")
+
+    # 4. Keyword exclusion filter
+    exclude_word = input("\nExclude items containing this word (press Enter to skip): ").strip().lower()
+    if exclude_word:
+        all_results = [
+            item for item in all_results
+            if exclude_word not in item['title'].lower()
+        ]
+        print(Fore.GREEN + f"Filtered results excluding '{exclude_word}'." + Style.RESET_ALL)
+
+    # --- Print and Export ---
+    print_results(all_results)
+    
+    export_choice = input(Fore.GREEN + "\nExport results to XLSX? (yes/no): ").strip().lower()
+    if export_choice == "yes":
+        export_results_xlsx(all_results)
+
+def main():
+    while True:
+        run_search()
+        again = input(Fore.GREEN + "\nDo another search? (yes/no): ").strip().lower()
+        if again != "yes":
+            print(Fore.YELLOW + "Goodbye!")
+            break
+
+if __name__ == "__main__":
+    main()
