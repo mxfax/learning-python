@@ -139,3 +139,37 @@ Requirements
 12. A simple Python typing speed checker built with Tkinter.
 It displays a sample text from a file, tracks your typing in real time, and gives instant feedback for every character you type — highlighting mistakes and corrections.
 When you finish typing the full text correctly, it calculates and shows your typing speed (words per second).
+
+13. 🇵🇹 OLX.pt Advanced Web Scraper (olx.pt_cars.py)
+
+This is a Python-based command-line tool designed to scrape product listings from the Portuguese classifieds website, OLX.pt. It handles dynamic pagination, extracts detailed data (including specialized European numeric formats), offers interactive filtering, and exports the final, clean dataset to a structured Microsoft Excel (`.xlsx`) file for easy analysis.
+
+## Features
+
+* **Comprehensive Data Extraction:** Scrapes Title, Price, URL, Year (`Ano`), Mileage (`Quilómetros`), and Gearbox type (`Caixa`) for each listing.
+
+* **Robust Price Parsing:** Correctly handles the European/Portuguese numeric format (dot `.` as thousands separator, comma `,` as decimal separator).
+
+* **Interactive Filtering:** Allows users to filter results by minimum/maximum price and exclude listings based on user-defined keywords.
+
+* **Pagination Handling:** Fetches results from multiple pages, stopping only when the page limit is reached or manually interrupted.
+
+* **Efficient Networking:** Uses `requests.Session` for connection pooling and includes random `time.sleep` delays to ensure polite, efficient scraping.
+
+* **Structured Export:** Saves all filtered data into a well-formatted `.xlsx` file using the `pandas` library.
+
+## Prerequisites
+
+To run this script, you need Python 3 installed, along with the following libraries:
+```bash
+pip install requests beautifulsoup4 colorama pandas openpyxl
+```
+**Follow Prompts:** The script will guide you through the process:
+
+* Enter your search query (e.g., `BMW 320d e90`).
+
+* Choose whether to continue fetching pages.
+
+* Apply optional filters (Sort by Price, Min/Max Price, Exclude Keyword).
+
+* Choose to export the final list to an `olx_search_results.xlsx` file.
